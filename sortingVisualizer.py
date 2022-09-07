@@ -40,6 +40,7 @@ class valuesAndInformation:
     # We want to start at bottom left, in pygame coordinates start at top left aka (0,0)
     # As you move down, Y increase. As you move right, X increases.
     self.startingX = self.SIDE_PADDING // 2
+    return 
 
 # GENERATE THE STARTING LIST:
 def generate_starting_list(n, minimum, maximum):
@@ -56,10 +57,25 @@ def drawDisplay(drawInfo):
   # Everytime we draw, we want to overwrite what was previously on display with a background color.
   # This way there won't be any overlap visible to the user
   drawInfo.window.fill(drawInfo.BACKGROUND)
+  drawList(drawInfo)
   pygame.display.update()
+  return 
 
 def drawList(drawInfo):
-  pass
+  # Draw the rectangles for each of the elements in the list
+  lst = drawInfo.aList
+  # Get index and value of each element. Then calculate x and y coordinate
+  for i, val in enumerate(lst):
+    x = drawInfo.startingX + i * drawInfo.blockWidth
+    y = drawInfo.height - (val - drawInfo.minimumValue) * drawInfo.blockHeight 
+    # Every 3 elements switch to another shade
+    colorUsed = drawInfo.GRADIENTCOLORS[i % 3]
+
+    pygame.draw.rect(drawInfo.window, colorUsed, (x, y, drawInfo.blockWidth, drawInfo.height))
+
+  return
+
+    
 
 
 # MAIN DRIVER FUNCTION:
@@ -84,6 +100,7 @@ def main():
         run = False
 
   pygame.quit()
+  return
 
 if __name__ == "__main__":
   main()
