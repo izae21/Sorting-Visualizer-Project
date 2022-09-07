@@ -9,11 +9,12 @@ class valuesAndInformation:
   SIDE_PADDING = 150
   #RGB Values
   BLACK = 0, 0, 0
-  GREY = 128, 128, 128
   RED = 255, 0, 0
   GREEN = 0, 255, 0
-  WHITE = 255, 255, 255
-  BACKGROUND = WHITE
+  BLUE = 100, 149, 237
+  BACKGROUND = BLUE
+  # Gradient colors for yellowish gold
+  GRADIENTCOLORS = [(255,193,37), (238,180,34), (205,155,29)]
 
   def __init__(self, width, height, aList):
     self.height = height
@@ -50,6 +51,17 @@ def generate_starting_list(n, minimum, maximum):
 
   return displayList
 
+""" DRAW LIST TO DISPLAY TO WINDOW """
+def drawDisplay(drawInfo):
+  # Everytime we draw, we want to overwrite what was previously on display with a background color.
+  # This way there won't be any overlap visible to the user
+  drawInfo.window.fill(drawInfo.BACKGROUND)
+  pygame.display.update()
+
+def drawList(drawInfo):
+  pass
+
+
 # MAIN DRIVER FUNCTION:
 def main():
   run = True
@@ -64,7 +76,7 @@ def main():
     # Max number of time loop can run per second
     clock.tick(60)
     # Render display to window
-    pygame.display.update()
+    drawDisplay(drawValuesAndInfo)
 
     for event in pygame.event.get():
       # When user quits application
