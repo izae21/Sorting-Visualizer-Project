@@ -7,8 +7,11 @@ pygame.init()
 class valuesAndInformation:
   TOP_PADDING = 150
   SIDE_PADDING = 150
-  #RGB Values
-  BLACK = 0, 0, 0
+  # Font for sort control display
+  FONT = pygame.font.SysFont('cambria', 25)
+  LARGER_FONT = pygame.font.SysFont('cambria', 35)
+  # RGB Values
+  WHITE = 248, 248, 255
   RED = 255, 0, 0
   GREEN = 0, 255, 0
   BLUE = 0, 104, 139
@@ -57,6 +60,15 @@ def drawDisplay(drawInfo):
   # Everytime we draw, we want to overwrite what was previously on display with a background color.
   # This way there won't be any overlap visible to the user
   drawInfo.window.fill(drawInfo.BACKGROUND)
+
+  # Draw controls:
+  controls = drawInfo.FONT.render("R - Reset || S - Sort || A - Ascending || D - Descending", 1, drawInfo.WHITE)
+  drawInfo.window.blit(controls, (drawInfo.width/2 - controls.get_width()/2, 5))
+
+  # Draw Possible Sorting Choices:
+  sortChoice = drawInfo.FONT.render("B - Bubble Sort || I - Insertion Sort", 1, drawInfo.WHITE)
+  drawInfo.window.blit(sortChoice, (drawInfo.width/2 - sortChoice.get_width()/2, 35))
+
   drawList(drawInfo)
   pygame.display.update()
   return 
@@ -83,6 +95,9 @@ def main():
   run = True
   clock = pygame.time.Clock()
 
+  nowSort = False
+  ascend = False
+  descend = False
   n, minimumVal, maximumVal = 43, 0, 100
 
   displayList = generate_starting_list(n, minimumVal, maximumVal)
@@ -106,6 +121,17 @@ def main():
       if event.key == pygame.K_r:
         displayList = generate_starting_list(n, minimumVal, maximumVal)
         drawValuesAndInfo.set_list(displayList)
+        # Reset sorting when list is reset
+        nowSort = False
+
+      # Initialize sorting on key press and if not already sorting
+      elif event.key == pygame.K_s and nowSort == False:
+        nowSort = True
+      # Let user decide to sort by ascending or descending order
+      elif event.key == pygame.K_a and not nowSort:
+        ascend = True
+      elif event.key == pygame.K_d and not nowSort:
+        ascend = False
 
 
 
