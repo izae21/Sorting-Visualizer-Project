@@ -11,7 +11,7 @@ class valuesAndInformation:
   BLACK = 0, 0, 0
   RED = 255, 0, 0
   GREEN = 0, 255, 0
-  BLUE = 100, 149, 237
+  BLUE = 0, 104, 139
   BACKGROUND = BLUE
   # Gradient colors for yellowish gold
   GRADIENTCOLORS = [(255,193,37), (238,180,34), (205,155,29)]
@@ -98,6 +98,16 @@ def main():
       # When user quits application
       if event.type == pygame.QUIT:
         run = False
+
+      # Set up event of user reloading list
+      # If no key press, continue to next event, else reload.
+      if event.type != pygame.KEYDOWN:
+        continue
+      if event.key == pygame.K_r:
+        displayList = generate_starting_list(n, minimumVal, maximumVal)
+        drawValuesAndInfo.set_list(displayList)
+
+
 
   pygame.quit()
   return
