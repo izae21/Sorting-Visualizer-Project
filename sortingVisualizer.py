@@ -1,4 +1,3 @@
-from re import I
 import pygame
 import random
 import math
@@ -177,7 +176,7 @@ def selectionSort(drawInfo, ascend=True):
 
   return inputList
 
-# Heap Sort: Time Complexity: O(n log n), Space Complexity: O(1)
+# Heapify: turn the list into a min or max Heap
 def heapify(inputList, length, index, ascend=True):
 
   maxOrminIdx = index
@@ -202,7 +201,7 @@ def heapify(inputList, length, index, ascend=True):
     heapify(inputList, length, maxOrminIdx, ascend)
 
 
-
+# Heap Sort: Time Complexity: O(n log n), Space Complexity: O(1)
 def heapSort(drawInfo, ascend=True):
   inputList = drawInfo.aList
   n = len(inputList)
