@@ -1,3 +1,4 @@
+from re import I
 import pygame
 import random
 import math
@@ -73,7 +74,7 @@ def drawDisplay(drawInfo, algoName, ascend):
   drawInfo.window.blit(controls, (drawInfo.width/2 - controls.get_width()/2, 45))
 
   # Draw Possible Sorting Choices:
-  sortChoice = drawInfo.FONT.render("B - Bubble Sort || I - Insertion Sort || L - Selection Sort || Q - Quick Sort", 1, drawInfo.WHITE)
+  sortChoice = drawInfo.FONT.render("B - Bubble Sort || I - Insertion Sort || L - Selection Sort || H - Heap Sort", 1, drawInfo.WHITE)
   drawInfo.window.blit(sortChoice, (drawInfo.width/2 - sortChoice.get_width()/2, 75))
 
   drawList(drawInfo)
@@ -176,8 +177,46 @@ def selectionSort(drawInfo, ascend=True):
 
   return inputList
 
-def quickSort(drawInfo, ascend=True):
-  pass
+# Heap Sort: Time Complexity: O(n log n), Space Complexity: O(1)
+def heapify(inputList, length, index, ascend=True):
+
+  maxOrminIdx = index
+  # Index of child nodes
+  l = index * 2 + 1
+  r = index * 2 + 2
+
+  if ascend:
+    if l < length and inputList[index] < inputList[l]:
+      maxOrminIdx = l
+    if r < length and inputList[maxOrminIdx] < inputList[r]:
+      maxOrminIdx = r
+
+  elif not ascend:
+    if l < length and inputList[l] < inputList[maxOrminIdx]:
+      maxOrminIdx = l
+    if r < length and inputList[r] < inputList[maxOrminIdx]:
+      maxOrminIdx = r 
+
+  if maxOrminIdx != index:
+    inputList[index], inputList[maxOrminIdx] = inputList[maxOrminIdx], inputList[index]
+    heapify(inputList, length, maxOrminIdx, ascend)
+
+
+
+def heapSort(drawInfo, ascend=True):
+  inputList = drawInfo.aList
+  n = len(inputList)
+
+  for i in range(n//2, -1, -1):
+    heapify(inputList, n, i, ascend)
+
+
+  for i in range(n - 1, 0, -1):
+    inputList[i], inputList[0] = inputList[0], inputList[i]
+    drawList(drawInfo, {i: drawInfo.GREEN, 0: drawInfo.RED}, True)
+    yield True
+    heapify(inputList, i, 0, ascend)
+
 
 
 """ MAIN DRIVER FUNCTION """
@@ -247,9 +286,9 @@ def main():
       elif event.key == pygame.K_l and not nowSort:
         sortAlgo = selectionSort
         sortAlgoName = "Selection Sort"
-      elif event.key == pygame.K_q and not nowSort:
-        sortAlgo = quickSort
-        sortAlgoName = "Quick Sort"
+      elif event.key == pygame.K_h and not nowSort:
+        sortAlgo = heapSort
+        sortAlgoName = "Heap Sort"
 
 
 
