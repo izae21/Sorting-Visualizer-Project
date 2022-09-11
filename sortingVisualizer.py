@@ -73,7 +73,7 @@ def drawDisplay(drawInfo, algoName, ascend):
   drawInfo.window.blit(controls, (drawInfo.width/2 - controls.get_width()/2, 45))
 
   # Draw Possible Sorting Choices:
-  sortChoice = drawInfo.FONT.render("B - Bubble Sort || I - Insertion Sort", 1, drawInfo.WHITE)
+  sortChoice = drawInfo.FONT.render("B - Bubble Sort || I - Insertion Sort || L - Selection Sort || Q - Quick Sort", 1, drawInfo.WHITE)
   drawInfo.window.blit(sortChoice, (drawInfo.width/2 - sortChoice.get_width()/2, 75))
 
   drawList(drawInfo)
@@ -113,7 +113,7 @@ def drawList(drawInfo, colorPos={}, clearBackground=False):
 
 
 """ SORTING FUNCTIONS """
-# Bubble Sort: Time Complexity: O(n^2)
+# Bubble Sort: Time Complexity: O(n^2), Space Complexity: O(1)
 def bubbleSort(drawInfo, ascend=True):
   inputList = drawInfo.aList
   
@@ -130,7 +130,54 @@ def bubbleSort(drawInfo, ascend=True):
 
   return inputList
 
+# Insertion Sort: Time Complexity: O(n^2), Space Complexity: O(1)
+def insertionSort(drawInfo, ascend=True):
+  inputList = drawInfo.aList
 
+  for i in range(1, len(inputList)):
+
+    current = inputList[i]
+
+    while True:
+      sortAscending = i > 0 and inputList[i - 1] > current and ascend
+      sortDescending = i > 0 and inputList[i - 1] < current and not ascend
+
+      # If at some point, there is nothing to swap, exit while loop, move to next iteration in for loop
+      if not sortAscending and not sortDescending:
+        break
+
+      inputList[i] = inputList[i - 1]
+      i = i - 1
+      inputList[i] = current
+      drawList(drawInfo, {i: drawInfo.GREEN, i - 1: drawInfo.RED}, True)
+      yield True
+
+  return inputList
+
+# Selection Sort: Time Complexity: O(n^2), Space Complexity: O(1)
+def selectionSort(drawInfo, ascend=True):
+  inputList = drawInfo.aList
+
+  for i in range(len(inputList)):
+    minimumIndex = i
+
+    for j in range(minimumIndex + 1, len(inputList)):
+
+      if ascend:
+        if inputList[j] < inputList[minimumIndex]:
+          minimumIndex = j
+      else:
+        if inputList[j] > inputList[minimumIndex]:
+          minimumIndex = j
+      
+    inputList[i], inputList[minimumIndex] = inputList[minimumIndex], inputList[i]
+    drawList(drawInfo, {i: drawInfo.GREEN, minimumIndex: drawInfo.RED}, True)
+    yield True
+
+  return inputList
+
+def quickSort(drawInfo, ascend=True):
+  pass
 
 
 """ MAIN DRIVER FUNCTION """
@@ -141,6 +188,7 @@ def main():
   nowSort = False
   ascend = True
 
+  # Default is bubbleSort
   sortAlgo = bubbleSort
   sortAlgoName = "Bubble Sort"
   sortAlgoGenerator = None
@@ -152,7 +200,7 @@ def main():
 
   while run:
     # Max number of time loop can run per second
-    clock.tick(70)
+    clock.tick(30)
 
     # Use the generator to get to next yield, end when no more items to iterate
     if nowSort:
@@ -190,6 +238,18 @@ def main():
         ascend = True
       elif event.key == pygame.K_d and not nowSort:
         ascend = False
+      elif event.key == pygame.K_b and not nowSort:
+        sortAlgo = bubbleSort
+        sortAlgoName = "Bubble Sort"
+      elif event.key == pygame.K_i and not nowSort:
+        sortAlgo = insertionSort
+        sortAlgoName = "Insertion Sort"
+      elif event.key == pygame.K_l and not nowSort:
+        sortAlgo = selectionSort
+        sortAlgoName = "Selection Sort"
+      elif event.key == pygame.K_q and not nowSort:
+        sortAlgo = quickSort
+        sortAlgoName = "Quick Sort"
 
 
 
