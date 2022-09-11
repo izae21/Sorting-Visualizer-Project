@@ -6,3 +6,8 @@
 ## How to use:
 - Simply press the control keys indicated within the program to control the sorting algorithm visualizer.
 
+### Some features I'd like to add:
+- More sorting algorithms
+- Control sort speed
+- Sound during sorting
+- Improved UI
